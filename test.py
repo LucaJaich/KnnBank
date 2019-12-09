@@ -25,7 +25,8 @@ df = pd.read_csv("bank.csv", delimiter=";") # Uso de general un dataset acortado
 df2 = pd.read_csv("bank-full.csv", delimiter=";")
 df = encoder(df) # Encodeo los features que son strings
 df2 = encoder(df2)
-df = df.append(df2[df2['y']==1][:1200], sort=False) # Appendeo 1200 rows con label "yes" porque sino hay mucha diferencia
+df = df.append(df2[df2['y']==1][:4000], sort=False)
+df = df.append(df2[df2['y']==0][:3500], sort=False) # Appendeo 1200 rows con label "yes" porque sino hay mucha diferencia
 df = df.astype(int)
 print(df.head())
 print(df['y'].value_counts())
@@ -40,21 +41,25 @@ clf.fit(X_train, y_train) # Lo entreno
 
 acc = clf.score(X_test, y_test) # Le paso el test para ver el accuracy
 
-# <-------Usar esto para probal el modelo con un valor aleatorio-------------
-# example_num.append(random.randint(0, len(y_test)))
+example_nums = []
+aux = 0
+
+# <-------Usar esto para probal el modelo con x valores aleatorio-------------
+for i, val in enumerate(y_test):
+    aux += 1
+    example_nums.append(i)
+    if aux == 5: # igualar a x valor
+        break
 #--------------------------------------------------------------------------/>
 
 # Usar esto para probar el modelo con x valores de cierto label
 #<-----------------------------------------------------------------
-example_nums = []
-aux = 0
-
-for i, val in enumerate(y_test):
-    if val == 1: # igualar a label
-        aux += 1
-        example_nums.append(i)
-    if aux == 5: # igualar a x valor
-        break
+# for i, val in enumerate(y_test):
+#     if val == 1: # igualar a label
+#         aux += 1
+#         example_nums.append(i)
+#     if aux == 5: # igualar a x valor
+#         break
 #------------------------------------------------------------------/>
 
 for example_num in example_nums:
